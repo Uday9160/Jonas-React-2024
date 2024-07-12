@@ -2334,3 +2334,1583 @@ The `foreach` loop is particularly useful when:
 - You need to iterate over all elements in a collection.
 - You do not need to modify the collection elements.
 - You do not need the index of the elements.
+
+# Lecture Notes: Understanding Lists in C#
+
+In this lecture, we will learn about lists, understand how they differ from arrays, and explore some crucial methods we can use with lists.
+
+## Introduction to Lists
+
+### Arrays vs. Lists
+- **Arrays**:
+  - Have a fixed size.
+  - Once created, the size cannot be changed.
+  - Suitable when the size of the collection is known upfront (e.g., coordinates of a triangle, chessboard).
+
+- **Lists**:
+  - Have a dynamic size.
+  - Elements can be added or removed.
+  - Suitable for collections where the size can change (e.g., items in a shopping cart, to-do lists).
+
+### Declaring and Initializing a List
+
+To declare and initialize a list of strings:
+```csharp
+List<string> words = new List<string>();
+```
+- `List` is a class, so we use the `new` keyword to create it.
+- Angle brackets `<string>` specify the type of elements in the list.
+  
+Alternatively, we can initialize a list with items:
+```csharp
+List<string> words = new List<string> { "apple", "banana", "cherry" };
+```
+
+### Properties and Methods
+
+- **Count Property**:
+  - Similar to the `Length` property in arrays, but called `Count` for lists.
+  - Example:
+    ```csharp
+    Console.WriteLine(words.Count); // Output: 3
+    ```
+
+- **Add Method**:
+  - Adds an element to the list.
+  - Example:
+    ```csharp
+    words.Add("date");
+    Console.WriteLine(words.Count); // Output: 4
+    ```
+
+- **Remove Method**:
+  - Removes the first occurrence of the specified element.
+  - Example:
+    ```csharp
+    words.Remove("banana");
+    Console.WriteLine(words.Count); // Output: 3
+    ```
+
+- **RemoveAt Method**:
+  - Removes the element at the specified index.
+  - Example:
+    ```csharp
+    words.RemoveAt(0); // Removes the first element
+    Console.WriteLine(words.Count); // Output: 2
+    ```
+
+- **AddRange Method**:
+  - Adds a range of elements to the list.
+  - Example:
+    ```csharp
+    words.AddRange(new string[] { "elderberry", "fig", "grape" });
+    Console.WriteLine(words.Count); // Output: 5
+    ```
+
+- **IndexOf Method**:
+  - Returns the index of the first occurrence of a specified element.
+  - Returns `-1` if the element is not found.
+  - Example:
+    ```csharp
+    int index = words.IndexOf("cherry");
+    Console.WriteLine(index); // Output: 1
+    ```
+
+- **Contains Method**:
+  - Checks if an element exists in the list.
+  - Returns a boolean value.
+  - Example:
+    ```csharp
+    bool hasApple = words.Contains("apple");
+    Console.WriteLine(hasApple); // Output: true
+    ```
+
+- **Clear Method**:
+  - Removes all elements from the list.
+  - Example:
+    ```csharp
+    words.Clear();
+    Console.WriteLine(words.Count); // Output: 0
+    ```
+
+### Using `foreach` Loop with Lists
+
+The `foreach` loop is an efficient way to iterate over lists:
+```csharp
+foreach (string word in words)
+{
+    Console.WriteLine(word);
+}
+```
+# Lecture Notes: Understanding the `out` Keyword in C#
+
+In this lecture, we will learn about the `out` keyword, its purpose, and how to use it. Understanding this concept will help us handle user input more effectively in our to-do list app.
+
+## The Need for the `out` Keyword
+
+### Scenario
+We want to read a number provided by the user and validate if the input is actually a number. Previously, we either:
+- Ignored invalid input, letting the app crash if it wasn't parsable to an `int`.
+- Checked if all characters in the input were digits.
+
+There is a better way using the `TryParse` method, which we'll cover in the next lecture. First, we need to understand the `out` keyword.
+
+### Returning Multiple Values
+Sometimes, we need to return more than one result from a method. For example:
+- Given an array of numbers, return a list of positive numbers and the count of non-positive numbers.
+
+### Example without `out`
+```csharp
+public List<int> GetPositiveNumbers(int[] numbers)
+{
+    List<int> result = new List<int>();
+    foreach (int number in numbers)
+    {
+        if (number > 0)
+        {
+            result.Add(number);
+        }
+    }
+    return result;
+}
+```
+This method returns a list of positive numbers but doesn't provide the count of non-positive numbers.
+
+## Using the `out` Keyword
+
+### Method Definition with `out`
+To also return the count of non-positive numbers:
+```csharp
+public List<int> GetPositiveNumbers(int[] numbers, out int countOfNonPositive)
+{
+    List<int> result = new List<int>();
+    countOfNonPositive = 0;
+
+    foreach (int number in numbers)
+    {
+        if (number > 0)
+        {
+            result.Add(number);
+        }
+        else
+        {
+            countOfNonPositive++;
+        }
+    }
+    return result;
+}
+```
+### Calling the Method with `out`
+```csharp
+int[] numbers = { -1, 2, -3, 4, 0 };
+int nonPositiveCount;
+List<int> positiveNumbers = GetPositiveNumbers(numbers, out nonPositiveCount);
+
+Console.WriteLine("Positive Numbers: " + string.Join(", ", positiveNumbers));
+Console.WriteLine("Count of Non-Positive Numbers: " + nonPositiveCount);
+```
+
+### Key Points
+1. **Parameter Declaration**:
+   - In the method signature, the parameter is declared with the `out` modifier.
+   - Inside the method, this parameter must be assigned a value before the method returns.
+
+2. **Method Call**:
+   - When calling the method, the `out` keyword must be used with the variable passed as the `out` parameter.
+   - This variable does not need to be initialized before being passed to the method.
+
+3. **Variable Initialization**:
+   - Inside the method, the `out` parameter is treated as an uninitialized variable and must be assigned a value.
+
+### Why `out` is Necessary
+Without the `out` keyword, passing a variable to a method creates a copy. Any modifications inside the method do not affect the original variable. The `out` keyword allows the method to directly modify the passed variable.
+
+### Example without `out`
+```csharp
+public List<int> GetPositiveNumbers(int[] numbers, int countOfNonPositive)
+{
+    List<int> result = new List<int>();
+    countOfNonPositive = 0;
+
+    foreach (int number in numbers)
+    {
+        if (number > 0)
+        {
+            result.Add(number);
+        }
+        else
+        {
+            countOfNonPositive++;
+        }
+    }
+    return result;
+}
+
+// Calling the method
+int[] numbers = { -1, 2, -3, 4, 0 };
+int nonPositiveCount = 0;
+List<int> positiveNumbers = GetPositiveNumbers(numbers, nonPositiveCount);
+
+Console.WriteLine("Count of Non-Positive Numbers: " + nonPositiveCount); // Output: 0
+```
+The output is incorrect because the `countOfNonPositive` variable inside the method is a copy of the original variable.
+
+# Lecture Notes: Parsing Strings to Integers with TryParse
+
+In this lecture, we will learn how to parse a string to an integer without risking a runtime error. We'll also cover a useful keyboard shortcut for formatting code.
+
+## Parsing Strings to Integers
+
+### The Problem with `int.Parse`
+Previously, we used the `int.Parse` method to convert a string to an integer. While this method works, it causes a runtime error if the input is not a valid number.
+
+### Example of `int.Parse`
+```csharp
+string input = "abc";
+int number = int.Parse(input); // This will throw a runtime error
+```
+
+### Solution: `TryParse`
+The `TryParse` method addresses this issue by:
+1. Returning a `bool` indicating whether the parsing was successful.
+2. Using an `out` parameter to return the parsed integer if the parsing is successful.
+
+### Syntax of `TryParse`
+```csharp
+string input = "123";
+bool isParsed = int.TryParse(input, out int number);
+
+if (isParsed)
+{
+    Console.WriteLine("Parsed number: " + number);
+}
+else
+{
+    Console.WriteLine("Invalid input.");
+}
+```
+
+### Key Points
+1. **Return Type**: `TryParse` returns a `bool` indicating success or failure.
+2. **Out Parameter**: If parsing is successful, the parsed integer is assigned to the `out` parameter.
+3. **Default Value**: If parsing fails, the `out` parameter is set to the default value for integers (0).
+
+### Example in Practice
+```csharp
+string input = "456";
+bool isParsed = int.TryParse(input, out int number);
+
+if (isParsed)
+{
+    Console.WriteLine("Parsed number: " + number);
+}
+else
+{
+    Console.WriteLine("Invalid input.");
+}
+```
+
+### Handling User Input
+To keep asking the user for a valid number until they provide one, we can use a `do-while` loop.
+
+### Example with `do-while` Loop
+```csharp
+bool isParsed;
+int number;
+
+do
+{
+    Console.WriteLine("Please enter a number:");
+    string input = Console.ReadLine();
+    isParsed = int.TryParse(input, out number);
+
+    if (!isParsed)
+    {
+        Console.WriteLine("Invalid input. Please try again.");
+    }
+} while (!isParsed);
+
+Console.WriteLine("You entered a valid number: " + number);
+```
+
+## Formatting Code with Keyboard Shortcut
+If the formatting of your code gets messy, you can use the `Ctrl+K+D` shortcut in Visual Studio to automatically format it.
+
+### Example of Code Formatting
+```csharp
+// Messy code
+Console.WriteLine("Please enter a number:");string input = Console.ReadLine();
+bool isParsed = int.TryParse(input, out int number);if (isParsed) {Console.WriteLine("Parsed number: " + number);}else {Console.WriteLine("Invalid input.");}
+
+// Formatted code using Ctrl+K+D
+Console.WriteLine("Please enter a number:");
+string input = Console.ReadLine();
+bool isParsed = int.TryParse(input, out int number);
+if (isParsed)
+{
+    Console.WriteLine("Parsed number: " + number);
+}
+else
+{
+    Console.WriteLine("Invalid input.");
+}
+```
+
+### Steps to Format Code
+1. Select the code you want to format.
+2. Press `Ctrl+K+D`.
+
+## Summary
+- The `TryParse` method is a safer alternative to `int.Parse` for converting strings to integers.
+- It returns a `bool` indicating success and uses an `out` parameter to return the parsed integer.
+- Use a `do-while` loop to repeatedly ask the user for input until a valid number is provided.
+- The `Ctrl+K+D` shortcut in Visual Studio can quickly format your code.
+
+With these tools and techniques, we are now ready to finish the implementation of our to-do list app.
+
+
+
+
+
+
+
+# Lecture Notes: Understanding the Need for Object-Oriented Programming
+
+In this lecture, we will analyze the issues in the code of the Todo list app. This analysis will help us understand why object-oriented programming (OOP) is essential. We will also explore procedural programming, its problems, and the concept of anti-patterns, specifically spaghetti code. Finally, we will learn what high-quality code must always be ready for.
+
+## Procedural Programming
+
+### Structure of the Todo List App
+- The program is simple and executes code from top to bottom.
+- Methods are created to improve readability and reusability.
+- The main logic is centralized in one file, which can become unwieldy as the application grows.
+
+### Problems with Procedural Programming
+1. **Scalability**: As the application grows, the file size increases, making the code harder to read and maintain.
+2. **Limited Access Control**: There is no way to limit access to certain functions, which can be necessary for maintaining critical data.
+3. **Complex Main Logic**: Even with functions moved to separate files, the main logic remains long and complex.
+4. **No Separation of Concerns**: High-level business decisions and low-level technical details are not separated. This lack of separation can make future changes difficult.
+5. **Hard to Adapt to Changes**: Procedural code is not flexible enough to adapt to new requirements or changes in existing requirements, such as switching from console input to a graphical user interface or adding new storage options (local vs. cloud).
+
+### Example of Procedural Code Issues
+- If a user wants to switch from storing TODOs locally to storing them in the cloud, procedural code would require numerous `if` statements, making the code harder to maintain and extend.
+
+## Anti-patterns: Spaghetti Code
+- **Definition**: Spaghetti code is a disorganized and tangled codebase that is difficult to follow and maintain.
+- **Problems**: 
+  - Hard to modify a single part without affecting others.
+  - Future changes are painful and error-prone.
+
+## High-Quality Code Requirements
+- Must be easy to modify and extend.
+- Should accommodate changes in requirements without major refactoring.
+- Needs to separate high-level logic from low-level details for better maintainability and flexibility.
+
+## Object-Oriented Programming (OOP)
+### Introduction to OOP
+- **Origin**: Developed in the 1960s and gained popularity in the 1990s.
+- **Purpose**: To address the limitations of procedural programming by organizing code into objects that encapsulate data and behavior.
+- **Main Concepts**:
+  - **Encapsulation**: Bundling data with the methods that operate on that data.
+  - **Abstraction**: Hiding complex implementation details and exposing only the necessary parts.
+  - **Inheritance**: Creating new classes based on existing ones to promote code reuse.
+  - **Polymorphism**: Allowing methods to do different things based on the object they are called on.
+
+### Benefits of OOP
+1. **Improved Modularity**: Code is organized into discrete objects, making it easier to manage and understand.
+2. **Enhanced Reusability**: Objects and classes can be reused across different parts of the application.
+3. **Better Maintainability**: Changes in requirements can be managed more efficiently due to the modular nature of OOP.
+4. **Scalability**: Applications can grow without becoming unmanageable.
+
+### Example of OOP Structure
+- **Class Definition**: A blueprint for creating objects (instances).
+- **Objects**: Instances of classes that encapsulate data and behavior.
+- **Methods**: Functions defined within classes that operate on the object's data.
+
+## Summary
+- Procedural programming can lead to complex, unmanageable codebases, especially as applications grow.
+- Spaghetti code is an example of an anti-pattern that results from procedural programming.
+- High-quality code should be modular, maintainable, and adaptable to changes.
+- Object-oriented programming addresses these issues by organizing code into objects, promoting better design and maintainability.
+
+By understanding these concepts, we are better prepared to create robust, scalable, and maintainable applications using object-oriented programming.
+
+# Lecture Notes: Introduction to Object-Oriented Programming
+
+## What is Object-Oriented Programming (OOP)?
+
+**Definition:**
+- Object-oriented programming is a coding paradigm focused on the concept of objects, which contain data and methods.
+- These objects can model real-world features like a person or an address, as well as more abstract concepts like database connections.
+
+## Key Concepts
+
+### Classes, Objects, and Instances
+
+- **Classes**: Blueprints that define what data and methods the objects will contain.
+- **Objects**: Instances created from classes. They hold the data defined by the class and can perform the methods defined in the class.
+- **Instances**: Specific realizations of a class. Each instance can hold different data but will have the same methods.
+
+### Composition of Objects
+
+- **Simple Composition**: An object contains other objects. For example, a `Person` object can contain an `Address` object.
+- **Complex Composition**: An object contains a list of other objects. For instance, a `Person` object can have a list of `Address` objects representing different types of addresses (home, work, correspondence).
+
+### Methods in Objects
+
+- **Example**: A `Rectangle` object can contain two integers representing the lengths of its sides. It can also have methods to calculate the rectangle's area and circumference.
+
+### Abstract Concepts in OOP
+
+- **Example**: 
+  - `DatabaseConnector` object provides communication with a database.
+  - `TextFileReader` object reads files from the computer's memory and returns their content as strings.
+
+## Creating Classes and Instances
+
+- **Class Definition**: A class is defined once and can be used to create many instances.
+- **Instances**: These can vary in their data but will share the same methods. For example, two `Person` instances will have different names and addresses but will have the same methods like `GetFullName()`.
+
+## Examples of Classes
+
+- **Built-in Classes**: Lists, arrays, strings in C# standard library.
+- **Custom Classes**: Defined when built-in types are not enough, allowing for more specific and complex data structures.
+
+### Structs and Records
+
+- **Other Types**: Besides classes, C# allows defining custom types using structs and records.
+- **Technical Differences**: There are differences in how they operate, but for simplicity, we refer to all custom types as classes in a general discussion.
+
+## Benefits of Object-Oriented Programming
+
+1. **Modularity**: Code is organized into discrete objects, making it easier to manage and understand.
+2. **Maintainability**: Modular code is easier to maintain and modify.
+3. **Reusability**: Objects and classes can be reused across different parts of the application.
+4. **Flexibility**: OOP provides ways to adjust the behavior of classes to changing needs.
+5. **Understandability**: Responsibilities of single classes are simpler to grasp compared to tangled procedural code.
+6. **Control**: Better control over who can use specific pieces of code, reducing the likelihood of errors.
+
+## Fundamental Concepts of OOP
+
+- **Encapsulation**: Bundling data with the methods that operate on that data.
+- **Polymorphism**: Allowing methods to do different things based on the object they are called on.
+- **Abstraction**: Hiding complex implementation details and exposing only the necessary parts.
+- **Inheritance**: Creating new classes based on existing ones to promote code reuse.
+
+These fundamental concepts will be covered in more detail once we have some hands-on experience with working with classes and objects.
+
+## Summary
+
+- **Object-Oriented Programming** is centered around objects, which are instances of classes.
+- **Classes** act as blueprints for creating objects, defining their data and methods.
+- **Benefits** of OOP include modularity, maintainability, reusability, flexibility, understandability, and control.
+- **Fundamental Concepts** of OOP (encapsulation, polymorphism, abstraction, inheritance) are crucial and will be explored further in practical examples.
+
+
+# Lecture Notes: Practical Use of Object-Oriented Programming with DateTime
+
+## Introduction to Object-Oriented Programming with DateTime
+
+**Objective:**
+- Understand the practical application of object-oriented programming (OOP) using the DateTime type in C#.
+- Learn about constructors and their role in creating instances of classes and structs.
+
+## Key Concepts
+
+### Objects Containing Data and Methods
+
+- **Objects**: Contain data and methods that can represent both concrete and abstract concepts.
+- **Example**: DateTime type represents date and time, providing access to data (like year, month, day) and methods (like adding days or finding the day of the week).
+
+### The DateTime Type
+
+- **Use Cases**: Representing dates of birth, subscription dates, user activity timestamps, etc.
+- **Capabilities**: Access year, month, day, hour, minute, and additional information like the day of the week. Perform operations like adding days, months, or years.
+
+## Creating and Using a DateTime Object
+
+### Creating a DateTime Object
+
+- **Syntax**: Use the `new` keyword followed by the type name and parentheses, which call the constructor.
+- **Constructor**: A special method used to create new instances of a class or struct. Can take parameters to initialize the instance.
+
+#### Example:
+```csharp
+DateTime internationalPizzaDay2022 = new DateTime(2023, 2, 9);
+```
+
+- This creates a DateTime object representing February 9, 2023.
+- The constructor takes three integer parameters: year, month, and day.
+
+### Retrieving Data from a DateTime Object
+
+- **Accessing Data**: Use properties to retrieve the year, month, and day.
+  
+#### Example:
+```csharp
+Console.WriteLine(internationalPizzaDay2022.Year);  // Outputs: 2023
+Console.WriteLine(internationalPizzaDay2022.Month); // Outputs: 2
+Console.WriteLine(internationalPizzaDay2022.Day);   // Outputs: 9
+```
+
+### Using Methods in a DateTime Object
+
+- **Methods**: DateTime objects contain methods to manipulate dates, such as adding years, months, or days.
+
+#### Example:
+```csharp
+DateTime nextYear = internationalPizzaDay2022.AddYears(1);
+Console.WriteLine(nextYear); // Outputs: 2024-02-09 00:00:00
+```
+
+### Calculating the Day of the Week
+
+- **Day of the Week**: Use the `DayOfWeek` property to find out what day of the week a date falls on.
+  
+#### Example:
+```csharp
+Console.WriteLine(internationalPizzaDay2022.DayOfWeek); // Outputs: Thursday
+```
+
+## Benefits of Object-Oriented Programming
+
+- **Encapsulation**: The DateTime struct encapsulates the complex logic of date manipulation, making it easy to use without knowing the underlying implementation.
+- **Reusability**: Once defined, the DateTime struct can be reused in multiple places in the application, reducing redundancy.
+- **Maintainability**: Changes to the DateTime logic are made in one place, improving maintainability.
+- **Abstraction**: Users of the DateTime type do not need to understand the complex calculations; they only need to know how to use its properties and methods.
+
+## Summary
+
+- **Object-Oriented Programming**: Central to OOP is the concept of objects that contain both data and methods.
+- **DateTime Type**: A practical example of OOP, providing a way to represent and manipulate dates.
+- **Constructors**: Special methods used to create instances of classes or structs.
+- **Benefits**: Encapsulation, reusability, maintainability, and abstraction make OOP a powerful paradigm for writing modular and manageable code.
+
+In the next lecture, we will dive deeper into constructors and how they are used to initialize objects in object-oriented programming.
+
+# Lecture Notes: Understanding Abstraction in Object-Oriented Programming
+
+## Introduction to Abstraction
+
+**Objective:**
+- Learn what abstraction is in object-oriented programming (OOP).
+- Understand the benefits of hiding implementation details from the users of a class.
+
+## Key Concepts
+
+### What is Abstraction?
+
+- **Definition**: Abstraction is a principle in OOP where classes expose only essential data and methods while hiding the underlying details.
+- **Purpose**: Simplifies interaction with objects by providing only the necessary functionality and concealing complex implementation details.
+
+### Example: The DateTime Type
+
+#### Using DateTime
+
+- **Essentials Exposed**: The DateTime type allows users to access and manipulate dates and times without needing to know the internal workings.
+- **Hidden Details**: How DateTime calculates the day of the week, handles daylight saving time, leap years, and other complexities are hidden from the user.
+
+#### Real-world Analogy: Driving a Car
+
+- **User Interaction**: Users interact with the car through the steering wheel, pedals, and dashboard.
+- **Hidden Mechanisms**: The internal workings of the engine and other components are hidden from the user.
+
+### Internal Representation of DateTime
+
+- **dateData**: DateTime internally represents dates as a number called dateData, which is the number of ticks since January 1st, year one. Each tick is 100 nanoseconds.
+- **Complexity Hidden**: The conversion of this number into human-readable components (year, month, day, etc.) is handled internally.
+
+#### Benefits of Hiding Details
+
+1. **Simplicity for Users**: Users can interact with the type without needing to understand the complex logic.
+2. **Flexibility for Developers**: Developers can change the internal implementation (e.g., optimizing performance) without affecting users.
+
+## Designing Classes with Abstraction
+
+### Public Interface
+
+- **Definition**: The public interface includes all data and methods accessible from outside the class.
+- **Accessibility**: Internal data and methods are not accessible, ensuring users interact only with the intended interface.
+
+### Benefits of a Stable Public Interface
+
+- **Consistency**: The public interface remains stable even if internal implementations change, ensuring backward compatibility.
+- **Example**: Changing the engine or battery of a car doesn't change how the car is driven, so user manuals remain the same.
+
+## Practical Application
+
+- **Design Principle**: When designing classes, expose only the necessary interface and hide implementation details.
+- **Future-Proofing**: This approach makes the code easier to maintain and extend.
+
+## Summary
+
+- **Abstraction**: A fundamental OOP principle that simplifies the use of classes by hiding complex implementation details.
+- **DateTime Example**: Illustrates how complex logic can be hidden while providing an easy-to-use interface.
+- **Public Interface**: Ensures users interact with classes in a consistent way, even if internal details change.
+
+In the next lectures, we will continue to explore other fundamental OOP concepts like encapsulation, inheritance, and polymorphism, building on the foundation of abstraction.
+
+# Lecture Notes: Creating Your First C# Class
+
+## Introduction to Classes
+
+**Objective:**
+- Define your first C# class.
+- Understand what fields are and their default values.
+- Learn about the default constructor.
+
+## Key Concepts
+
+### Defining a Class
+
+- **Class Declaration**: Use the `class` keyword followed by the class name.
+- **Syntax**: No semicolons are needed after the class declaration.
+- **Naming Convention**: Class names should start with a capital letter.
+
+```csharp
+public class Rectangle
+{
+    // Fields declaration
+    public int width;
+    public int height;
+}
+```
+
+### Fields of a Class
+
+- **Definition**: Fields are variables that belong to an object of a class.
+- **Instance Specific**: Each instance of a class can have different values for its fields.
+
+```csharp
+public class Rectangle
+{
+    public int width;
+    public int height;
+}
+```
+
+### Creating an Instance of a Class
+
+- **Instance Creation**: Use the `new` keyword followed by the class name and parentheses.
+- **Example**: Creating a `Rectangle` object.
+
+```csharp
+Rectangle rect1 = new Rectangle();
+```
+
+### Default Constructor
+
+- **Definition**: A constructor is a method used to instantiate objects of a class.
+- **Default Constructor**: If no constructor is defined, a parameterless constructor is automatically created.
+- **Usage**: The default constructor initializes fields to their default values.
+
+```csharp
+Rectangle rect1 = new Rectangle();
+```
+
+### Field Default Values
+
+- **Automatic Initialization**: If fields are not initialized, they are set to their type's default values.
+- **Default for int**: The default value for an integer field is `0`.
+
+```csharp
+public class Rectangle
+{
+    public int width;
+    public int height;
+}
+```
+
+### Example Code
+
+- **Creating and Using a Rectangle Object**: Demonstrating the default values of fields.
+
+```csharp
+public class Rectangle
+{
+    public int width;
+    public int height;
+}
+
+public class Program
+{
+    public static void Main()
+    {
+        Rectangle rect1 = new Rectangle();
+        Console.WriteLine($"Width: {rect1.width}, Height: {rect1.height}");
+    }
+}
+```
+
+### Common Mistakes
+
+- **Semicolons**: No semicolons are needed after class declarations.
+- **Initialization**: Ensure fields are initialized either by the default constructor or explicitly to avoid unexpected values.
+
+### Example Code Output
+
+- **Expected Output**: Since the fields are not initialized, their default values are printed.
+
+```
+Width: 0, Height: 0
+```
+
+### Compilation Error
+
+- **Access Protection**: An error might occur if the fields are not accessible due to protection level. We'll cover this in the next lecture.
+
+```csharp
+// Error: cannot access Rectangle.height due to its protection level
+Console.WriteLine(rect1.height);
+```
+
+## Summary
+
+- **Classes**: Blueprints for creating objects with specific fields.
+- **Fields**: Variables belonging to class instances, automatically initialized to default values.
+- **Constructors**: Methods to create instances of a class, with a default parameterless constructor provided if none is defined.
+- **Next Lecture**: We'll discuss access protection and how to resolve the compilation error related to field access.
+
+By understanding these concepts, you can start creating and working with your own classes in C#, paving the way for more complex object-oriented programming techniques.
+
+# Lecture Notes: Data Hiding and Access Modifiers in C#
+
+## Introduction
+
+**Objective:**
+- Understand what data hiding is and its benefits.
+- Learn about class members and access modifiers.
+- Explore the effects of public and private access modifiers.
+- Recognize the default access modifier for fields.
+
+## Key Concepts
+
+### Data Hiding
+
+- **Definition**: Data hiding involves restricting access to certain class members (fields and methods) from outside the class.
+- **Purpose**: Ensures that objects maintain valid states by controlling how and when data is modified.
+- **Example**: Preventing direct modification of a rectangle's dimensions to ensure they are always positive.
+
+### Class Members
+
+- **Definition**: Class members are the components that make up a class, mainly fields (variables) and methods (functions).
+
+### Access Modifiers
+
+- **Purpose**: Control the visibility and accessibility of class members.
+- **Types**:
+  - **Public**: Accessible from any code.
+  - **Private**: Accessible only within the same class.
+  - **Protected**: Accessible within the same class and by derived class instances (not covered in this lecture).
+
+### Default Access Modifier
+
+- **Fields**: If no access modifier is specified, fields are private by default in C#.
+
+### Using Access Modifiers
+
+- **Private Fields**: Ensuring fields are private can protect data integrity by preventing external modification.
+
+```csharp
+public class Rectangle
+{
+    private int width;
+    private int height;
+
+    // Dummy method to prove internal access
+    public void PrintDimensions()
+    {
+        Console.WriteLine($"Width: {width}, Height: {height}");
+    }
+}
+```
+
+- **Public Fields**: If fields need to be accessed externally, they can be made public.
+
+```csharp
+public class Rectangle
+{
+    public int width;
+    public int height;
+}
+```
+
+### Example Code
+
+- **Private Access**: Demonstrating data hiding and internal access.
+
+```csharp
+public class Rectangle
+{
+    private int width;
+    private int height;
+
+    public void PrintDimensions()
+    {
+        Console.WriteLine($"Width: {width}, Height: {height}");
+    }
+}
+
+public class Program
+{
+    public static void Main()
+    {
+        Rectangle rect1 = new Rectangle();
+        // Console.WriteLine(rect1.width); // This will cause a compilation error due to private access
+        rect1.PrintDimensions(); // This works because PrintDimensions is public and can access private fields
+    }
+}
+```
+
+- **Public Access**: Allowing external access to fields.
+
+```csharp
+public class Rectangle
+{
+    public int width;
+    public int height;
+}
+
+public class Program
+{
+    public static void Main()
+    {
+        Rectangle rect1 = new Rectangle();
+        rect1.width = 5;
+        rect1.height = 10;
+        Console.WriteLine($"Width: {rect1.width}, Height: {rect1.height}");
+    }
+}
+```
+
+### Best Practices
+
+- **Data Hiding**: Only make members public if absolutely necessary to reduce the risk of invalid states.
+- **Encapsulation**: Use private fields and provide public methods to control access if needed.
+
+```csharp
+public class Rectangle
+{
+    private int width;
+    private int height;
+
+    // Public method to set dimensions
+    public void SetDimensions(int width, int height)
+    {
+        if (width > 0 && height > 0)
+        {
+            this.width = width;
+            this.height = height;
+        }
+        else
+        {
+            throw new ArgumentException("Width and height must be positive numbers.");
+        }
+    }
+
+    // Public method to print dimensions
+    public void PrintDimensions()
+    {
+        Console.WriteLine($"Width: {width}, Height: {height}");
+    }
+}
+```
+
+## Summary
+
+- **Data Hiding**: Protects data integrity by restricting external access to class members.
+- **Class Members**: Fields and methods that belong to a class.
+- **Access Modifiers**: Keywords that control the visibility of class members (`public`, `private`, `protected`).
+- **Default Modifier**: Fields are private by default if no access modifier is specified.
+- **Best Practices**: Use private fields and public methods to ensure valid object states.
+
+Understanding and utilizing data hiding and access modifiers will help you create robust, maintainable, and secure C# applications.
+
+# Lecture Notes: Custom Constructors in C#
+
+## Introduction
+
+**Objective:**
+- Define custom constructors in a class.
+- Understand the recommended naming conventions for fields.
+
+## Key Concepts
+
+### Fields and Default Values
+
+- **Fields**: Variables that belong to an object of a class.
+- **Default Values**: Fields get initialized with the default value for their type if not explicitly set.
+  - For integers, the default value is zero.
+- **Regular Variables**: Variables outside classes are uninitialized if not set.
+
+### Public Fields and Access Issues
+
+- **Public Fields**: Allow direct access and modification, leading to potential invalid states.
+  - Example: Setting a width to a negative value.
+- **Abstraction**: Exposing implementation details is not ideal.
+
+### Naming Conventions
+
+- **Public Fields**: Should start with a capital letter.
+  - Example: `public int Width;`
+- **Private Fields**: Should start with an underscore followed by a lowercase letter.
+  - Example: `private int _width;`
+
+### Custom Constructors
+
+- **Definition**: A constructor initializes an object when it is created.
+- **Naming**: Must match the class name.
+- **No Return Type**: Unlike other methods, constructors do not have a return type.
+- **Invocation**: Can only be called when creating an object.
+
+### Creating a Constructor
+
+- **Purpose**: Assign values to fields.
+- **Syntax**:
+
+```csharp
+public class Rectangle
+{
+    public int Width;
+    public int Height;
+
+    // Constructor
+    public Rectangle(int width, int height)
+    {
+        Width = width;
+        Height = height;
+    }
+}
+```
+
+- **Default Constructor**: If no constructor is defined, a parameterless constructor is autogenerated.
+  - Defining a custom constructor removes the autogenerated default constructor.
+
+### Example Code
+
+- **Class Definition with Constructor**:
+
+```csharp
+public class Rectangle
+{
+    public int Width;
+    public int Height;
+
+    // Constructor
+    public Rectangle(int width, int height)
+    {
+        Width = width;
+        Height = height;
+    }
+}
+```
+
+- **Creating Instances**:
+
+```csharp
+public class Program
+{
+    public static void Main()
+    {
+        // Creating first rectangle
+        Rectangle rect1 = new Rectangle(5, 10);
+        Console.WriteLine($"Width: {rect1.Width}, Height: {rect1.Height}");
+
+        // Creating second rectangle
+        Rectangle rect2 = new Rectangle(7, 14);
+        Console.WriteLine($"Width: {rect2.Width}, Height: {rect2.Height}");
+    }
+}
+```
+
+### Field Initialization
+
+- **Inline Initialization**: Fields can be initialized at the point of declaration.
+
+```csharp
+public class Rectangle
+{
+    public int Width = 3;
+    public int Height = 4;
+
+    // Constructor
+    public Rectangle(int width, int height)
+    {
+        Width = width;
+        Height = height;
+    }
+}
+```
+
+- **Constructor Overwrites**: Constructor values overwrite inline initialization values.
+
+```csharp
+public class Program
+{
+    public static void Main()
+    {
+        Rectangle rect1 = new Rectangle(5, 10);
+        Console.WriteLine($"Width: {rect1.Width}, Height: {rect1.Height}");
+    }
+}
+```
+
+## Summary
+
+- **Fields**: Initialized with default values if not explicitly set.
+- **Naming Conventions**: Public fields start with a capital letter, private fields with an underscore and lowercase letter.
+- **Custom Constructors**: Used to initialize objects, named after the class, without a return type, and only called when creating an object.
+- **Field Initialization**: Can be done inline or via constructor, with constructor values taking precedence.
+
+Understanding how to define and use custom constructors is essential for creating well-structured and robust C# applications.
+
+# Lecture Notes: Top-Level Statements and Code Structure in C#
+
+## Introduction
+
+**Objective:**
+- Understand the requirement for C# code to be within classes.
+- Learn about top-level statements introduced in .NET 6.
+
+## Key Concepts
+
+### Code Containment in C#
+
+- **Code within Classes**: In C#, all code must belong to some class. No variables or methods can exist outside a class.
+  - This is different from some other languages like C++ where functions can exist outside any type.
+
+### Top-Level Statements
+
+- **Introduction in .NET 6**: Top-level statements allow code to be written without explicitly defining a class and a `Main` method.
+- **Purpose**: Simplifies the code for beginners by removing boilerplate code.
+
+### Traditional Code Structure
+
+- **Pre-.NET 6**: A console application would start with a `Program` class and a `Main` method.
+
+```csharp
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        // Your code here
+    }
+}
+```
+
+### Example Code with Top-Level Statements
+
+- **Simplified Code**: You can write your executable code directly at the top of the file.
+
+```csharp
+Console.WriteLine("Hello, World!");
+```
+
+- **Behind the Scenes**: The code is automatically placed into a `Program` class and a `Main` method by the compiler.
+
+### Custom Types and Separation
+
+- **Defining Custom Types**: If you need to define custom types (classes, structs, etc.), they should be placed below the top-level statements or in separate files.
+- **Best Practices**: In real-life projects, it’s recommended to place each class in its own file.
+
+### Using Top-Level Statements
+
+- **Choice**: Using top-level statements is optional. You can still explicitly define the `Program` class and `Main` method if preferred.
+- **Project Templates**: When creating a new project, you can opt to include or exclude top-level statements.
+
+### Example: Explicit Program Class
+
+```csharp
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Console.WriteLine("Hello, World!");
+    }
+}
+```
+
+### Compilation Error Outside Classes
+
+- **Code Outside Classes**: Writing code outside a class or type definition will result in a compilation error.
+
+```csharp
+// This will cause a compilation error
+void MyMethod()
+{
+    Console.WriteLine("This is outside any class");
+}
+```
+
+### Benefits of Code within Classes
+
+- **Modular and Maintainable Code**: Forces adherence to the object-oriented paradigm, leading to modular, maintainable code.
+- **Reusability**: Provides building blocks that can be easily reused.
+
+## Summary
+
+- **Containment**: All C# code must be within classes or structs.
+- **Top-Level Statements**: Simplifies initial coding by removing boilerplate code in .NET 6 and later.
+- **Flexibility**: Developers can choose to use traditional class and `Main` method definitions.
+- **Best Practices**: Maintain modular code by defining custom types in separate files or below top-level statements.
+
+Understanding the structure and organization of C# code, especially with the introduction of top-level statements, helps in writing clear and maintainable programs.
+
+To enhance our Rectangle class with methods for calculating its area and circumference, let's proceed step by step:
+
+### Step 1: Define the Rectangle Class
+
+First, define the `Rectangle` class with private fields for `width` and `height` and a constructor to initialize these fields.
+
+```csharp
+public class Rectangle
+{
+    private int _width;
+    private int _height;
+
+    public Rectangle(int width, int height)
+    {
+        _width = width;
+        _height = height;
+    }
+}
+```
+
+### Step 2: Add Methods to Calculate Area and Circumference
+
+Next, add two methods to calculate the area and circumference of the rectangle. These methods will be public so that they can be accessed from outside the class.
+
+```csharp
+public class Rectangle
+{
+    private int _width;
+    private int _height;
+
+    public Rectangle(int width, int height)
+    {
+        _width = width;
+        _height = height;
+    }
+
+    public int CalculateArea()
+    {
+        return _width * _height;
+    }
+
+    public int CalculateCircumference()
+    {
+        return 2 * (_width + _height);
+    }
+}
+```
+
+### Step 3: Naming Conventions for Methods
+
+Notice that the methods are named `CalculateArea` and `CalculateCircumference`. It's a good practice in C# to start method names with a verb, indicating an action performed by the method. This helps distinguish methods from properties or fields, which typically start with nouns.
+
+### Step 4: Access Modifiers
+
+By default, methods without an explicit access modifier are private. Private methods can only be accessed within the class itself. To allow these methods to be accessed from outside the class, make them public explicitly.
+
+```csharp
+public class Rectangle
+{
+    private int _width;
+    private int _height;
+
+    public Rectangle(int width, int height)
+    {
+        _width = width;
+        _height = height;
+    }
+
+    public int CalculateArea()
+    {
+        return _width * _height;
+    }
+
+    public int CalculateCircumference()
+    {
+        return 2 * (_width + _height);
+    }
+}
+```
+
+### Step 5: Using the Rectangle Class
+
+Now, you can create instances of the `Rectangle` class and use its methods to calculate the area and circumference:
+
+```csharp
+class Program
+{
+    static void Main()
+    {
+        Rectangle rectangle1 = new Rectangle(5, 10);
+        Rectangle rectangle2 = new Rectangle(3, 7);
+
+        Console.WriteLine($"Rectangle 1 Area: {rectangle1.CalculateArea()}");
+        Console.WriteLine($"Rectangle 1 Circumference: {rectangle1.CalculateCircumference()}");
+
+        Console.WriteLine($"Rectangle 2 Area: {rectangle2.CalculateArea()}");
+        Console.WriteLine($"Rectangle 2 Circumference: {rectangle2.CalculateCircumference()}");
+    }
+}
+```
+
+### Summary
+
+In this example, we covered:
+- Defining a class (`Rectangle`) with private fields and a constructor.
+- Adding public methods (`CalculateArea` and `CalculateCircumference`) to perform calculations on the class's data.
+- Explaining the default access modifier (private) for methods and how to make them accessible (public).
+- Demonstrating the naming convention for methods in C# (starting with a verb).
+
+These principles ensure that your code is structured effectively, adhering to best practices in C# programming.
+
+In object-oriented programming, encapsulation and data hiding are closely related but distinct concepts:
+
+### Encapsulation
+
+Encapsulation refers to the bundling of data (attributes) and methods (functions) that operate on the data into a single unit, typically a class. The idea is to keep the implementation details of an object hidden from the outside world, while exposing a public interface through which other parts of the program can interact with the object. This helps in organizing code logically and promotes modularity and reusability.
+
+**Benefits of Encapsulation:**
+1. **Modularity:** Each class encapsulates its own functionality, promoting easier maintenance and updates.
+2. **Information Hiding:** By controlling access to data (making fields private), encapsulation helps prevent unauthorized access and ensures data integrity.
+3. **Ease of Use:** Users of a class only need to know its public interface (methods), not its internal details, making code simpler and less error-prone.
+
+### Data Hiding
+
+Data hiding, on the other hand, is a specific aspect of encapsulation. It involves making the internal state (fields or properties) of a class private, so they cannot be directly accessed or modified from outside the class. Instead, access is controlled through public methods (getters and setters) that enforce validation rules or perform necessary actions when data is accessed or modified.
+
+**Why Data Hiding Matters:**
+1. **Maintaining Consistency:** By restricting direct access to data, we can ensure that the data remains in a valid state.
+2. **Encouraging Proper Usage:** Users of a class are encouraged to interact with the object through defined methods, reducing the risk of unintended side effects or errors.
+3. **Flexibility in Implementation:** Internal details of a class can be changed without affecting other parts of the program, as long as the public interface remains consistent.
+
+### Relationship between Encapsulation and Data Hiding
+
+Encapsulation often enables data hiding by design. When fields are private, they are hidden from external classes or modules, and access is mediated through public methods. This promotes better control over how data is manipulated and ensures that changes to the internal representation of data do not break the functionality of other parts of the program.
+
+### Conclusion
+
+In summary, while encapsulation bundles data and methods together within a class, data hiding focuses specifically on restricting access to the internal state of an object. Both concepts are essential for creating robust, maintainable, and secure object-oriented programs, but they serve distinct purposes in achieving these goals.
+
+Method overloading in C# allows us to define multiple methods in the same class with the same name but different parameter lists. This enables us to provide variations of a method that perform similar tasks but operate on different types or numbers of parameters. Here's a breakdown of method overloading and its rules:
+
+### Method Overloading
+
+Method overloading is the practice of defining multiple methods in the same class with the same name but different parameters. This allows for more intuitive and flexible usage of methods within a class. Overloaded methods can differ in:
+
+- **Number of Parameters:** Methods can have a different number of parameters.
+- **Parameter Types:** Methods can have parameters of different types.
+- **Parameter Order:** Methods can have parameters of the same types but in a different order.
+
+### Rules for Method Overloading
+
+1. **Parameter Signature Must Differ:** Two methods in the same class cannot have the exact same parameter types in the same order. This means that the compiler must be able to distinguish between overloaded methods based on their parameter types or number.
+   
+2. **Return Type Overloading Not Allowed:** Overloading based solely on return type is not allowed in C#. Methods must be distinguished by their parameter types or numbers, not by their return types.
+
+### Example of Correct Method Overloading
+
+Let's consider the `MedicalAppointment` class example:
+
+```csharp
+public class MedicalAppointment
+{
+    private string patientName;
+    private DateTime appointmentDate;
+
+    // Constructor
+    public MedicalAppointment(string patientName, DateTime appointmentDate)
+    {
+        this.patientName = patientName;
+        this.appointmentDate = appointmentDate;
+    }
+
+    // Reschedule method with DateTime parameter
+    public void Reschedule(DateTime newDate)
+    {
+        this.appointmentDate = newDate;
+    }
+
+    // Overloaded Reschedule method with month and day parameters
+    public void Reschedule(int month, int day)
+    {
+        this.appointmentDate = new DateTime(this.appointmentDate.Year, month, day);
+    }
+
+    // Method to move appointment by months and days
+    public void MoveAppointment(int months, int days)
+    {
+        this.appointmentDate = this.appointmentDate.AddMonths(months).AddDays(days);
+    }
+}
+```
+
+### Explanation
+
+- The `MedicalAppointment` class demonstrates method overloading with two `Reschedule` methods:
+  - One takes a `DateTime` parameter to set a new date directly.
+  - The other takes an `int` for month and an `int` for day to adjust the appointment date.
+- The `MoveAppointment` method demonstrates a different operation that adjusts the appointment date by adding months and days.
+
+### Conclusion
+
+Method overloading provides flexibility and improves code readability by allowing methods to share the same name while catering to different parameter requirements. However, it's important to ensure that overloaded methods are distinguishable by their parameter lists to avoid ambiguity. Choosing meaningful names for methods is crucial when overloading to maintain clarity and intent in your code.
+
+Constructors in C# can be overloaded just like methods, allowing us to provide different ways to initialize objects of a class. When overloading constructors, we need to ensure each constructor has a unique parameter list, which distinguishes it from others. Let's explore constructor overloading and how to call one constructor from another using the `this` keyword:
+
+### Constructor Overloading
+
+Constructor overloading allows us to define multiple constructors within the same class, each accepting different parameters. This enables flexibility in object initialization based on the provided arguments.
+
+### Example of Constructor Overloading
+
+Let's continue with the `MedicalAppointment` class example and add overloaded constructors:
+
+```csharp
+public class MedicalAppointment
+{
+    private string patientName;
+    private DateTime appointmentDate;
+
+    // Constructor with both name and appointment date
+    public MedicalAppointment(string patientName, DateTime appointmentDate)
+    {
+        this.patientName = patientName;
+        this.appointmentDate = appointmentDate;
+    }
+
+    // Constructor with name only, default appointment date is a week from now
+    public MedicalAppointment(string patientName)
+        : this(patientName, DateTime.Now.AddDays(7))
+    {
+        // This constructor calls the other constructor using "this" keyword
+        // Sets appointmentDate to a week from now if not provided
+    }
+
+    // Constructor with name and days from now
+    public MedicalAppointment(string patientName, int daysFromNow)
+        : this(patientName, DateTime.Now.AddDays(daysFromNow))
+    {
+        // This constructor calls the other constructor using "this" keyword
+        // Sets appointmentDate to current date plus daysFromNow
+    }
+
+    // Other methods of the MedicalAppointment class can follow...
+}
+```
+
+### Explanation
+
+1. **Multiple Constructors:** The `MedicalAppointment` class now has three constructors:
+   - One that initializes both `patientName` and `appointmentDate`.
+   - One that initializes only `patientName` and defaults `appointmentDate` to a week from the current date.
+   - One that initializes `patientName` and calculates `appointmentDate` based on a specified number of days from the current date.
+
+2. **Using `this` Keyword:** In the second and third constructors, the `this` keyword is used to call another constructor from within the same class:
+   - `this(patientName, DateTime.Now.AddDays(7))` calls the first constructor with `patientName` and a default appointment date set to a week from now.
+   - `this(patientName, DateTime.Now.AddDays(daysFromNow))` calls the first constructor with `patientName` and a calculated appointment date based on `daysFromNow`.
+
+### Benefits of Constructor Overloading
+
+- **Code Reusability:** By overloading constructors and using the `this` keyword to delegate initialization logic, we avoid duplicating code and adhere to the DRY (Don't Repeat Yourself) principle.
+  
+- **Flexibility:** Users of the class can initialize objects in different ways based on their specific needs, whether providing all parameters or using default values provided by overloaded constructors.
+
+### Conclusion
+
+Constructor overloading in C# allows for cleaner, more readable code by providing multiple ways to initialize objects within a class. By using the `this` keyword to call other constructors, we can reuse initialization logic, avoiding redundancy and improving maintainability. This approach aligns with object-oriented principles and best practices in software development.
+
+Expression-bodied methods in C# are a concise and modern way to define methods that consist of a single expression or statement. Here's a summary of how they work and when to use them:
+
+### Expression vs Statement
+
+- **Expression:** Evaluates to a value. Examples include arithmetic operations (`1 + 2`), method calls that return a value (`GetString()`), or even a simple variable (`x`).
+  
+- **Statement:** Performs an action and does not return a value. Examples include method calls like `Console.WriteLine("Hello")`, conditional statements (`if`), or loops (`for`).
+
+### Using Expression-Bodied Methods
+
+In C#, when a method has only one statement or expression, you can use the expression-bodied syntax to make your code more concise:
+
+#### Syntax:
+
+```csharp
+// Regular method
+public int Add(int a, int b)
+{
+    return a + b;
+}
+
+// Expression-bodied method
+public int Add(int a, int b) => a + b;
+```
+
+### Benefits:
+
+1. **Conciseness:** Reduces boilerplate code, especially for simple methods.
+   
+2. **Readability:** Makes the intent of the method clearer by focusing on what the method returns rather than the mechanics of returning it.
+
+3. **Modern C# Usage:** Embraces newer features of the language that promote cleaner, more maintainable code.
+
+### Limitations:
+
+- **Single Expression/Statement:** You can only use expression-bodied syntax when the method contains exactly one expression or statement. If there are multiple lines of code or statements involved, you must use the traditional block syntax (`{ ... }`).
+
+### Example of Expression-Bodied Method:
+
+```csharp
+public bool IsEven(int number) => number % 2 == 0;
+```
+
+### When to Use:
+
+- **Short Methods:** For methods that are concise and straightforward, using expression-bodied syntax improves readability without sacrificing clarity.
+
+- **Getters and Setters:** Especially useful for property accessors (`get` and `set` methods) and methods that perform simple calculations or return results directly.
+
+### Conclusion:
+
+Expression-bodied methods in C# are a powerful feature that enhances code readability and maintainability, particularly for small methods with clear and direct purposes. By understanding the distinction between expressions and statements, you can leverage this feature effectively in your C# projects to write cleaner and more expressive code.
+
+The "this" keyword in C# serves two primary purposes within a class context: referencing the current instance of the class and disambiguating between instance variables and parameters or local variables. Here’s a summary of how it works based on your examples:
+
+### 1. Referring to the Current Instance
+
+When you use the "this" keyword, you're explicitly referring to the current instance of the class. This is particularly useful in scenarios where you need to pass the current object instance as an argument or use its methods and properties within the class itself.
+
+#### Example:
+```csharp
+public class MedicalAppointment
+{
+    private DateTime appointmentDate;
+    private string patientName;
+
+    public MedicalAppointment(DateTime date, string name)
+    {
+        appointmentDate = date;
+        patientName = name;
+    }
+
+    public DateTime GetDate()
+    {
+        return this.appointmentDate;
+    }
+
+    public void Reschedule(DateTime newDate)
+    {
+        this.appointmentDate = newDate;
+        PrintDate(); // Using 'this' to pass the current instance to PrintDate method
+    }
+
+    public void PrintDate()
+    {
+        Console.WriteLine("Appointment Date: " + this.GetDate());
+    }
+}
+```
+
+In the `Reschedule` method, `this.appointmentDate` refers to the instance field `appointmentDate`, and `this.PrintDate()` ensures that the `PrintDate` method is called on the current instance of `MedicalAppointment`.
+
+### 2. Disambiguating between Instance Variables and Parameters
+
+Another use case for the "this" keyword is to disambiguate between instance variables and local variables or parameters that have the same name. This situation typically arises when method parameters have the same name as instance fields.
+
+#### Example:
+```csharp
+public class MedicalAppointment
+{
+    private string patientName;
+
+    public MedicalAppointment(string patientName)
+    {
+        this.patientName = patientName; // Using 'this' to refer to the instance field
+    }
+
+    public void SetPatientName(string patientName)
+    {
+        this.patientName = patientName; // Disambiguating between parameter and field
+    }
+}
+```
+
+Here, `this.patientName` inside the constructor and `SetPatientName` method ensures that we are referring to the instance field `patientName`, not the method parameter with the same name.
+
+### Best Practices
+
+- **Naming Conventions:** Following standard naming conventions (like prefixing private fields with an underscore `_`) can reduce the need for using `this` to disambiguate names.
+  
+- **Clarity:** While using `this` can make your intentions clear, overusing it where unnecessary might clutter the code. Use it judiciously where it enhances readability and clarifies intent.
+
+Understanding and correctly using the "this" keyword in C# helps maintain code clarity and ensures correct referencing of instance members within class methods and constructors.
+
+Using optional parameters in C# is a powerful feature that allows constructors and methods to be more flexible and easier to use without creating multiple overloads. Here's a summary of how optional parameters work based on your examples:
+
+### Using Optional Parameters
+
+1. **Defining Default Values:**
+   Optional parameters allow you to define default values that will be used if no value is provided when calling the constructor or method.
+
+   ```csharp
+   public class MedicalAppointment
+   {
+       private string patientName;
+       private DateTime appointmentDate;
+
+       // Constructor with optional parameter daysFromNow
+       public MedicalAppointment(string patientName, int daysFromNow = 7)
+       {
+           this.patientName = patientName;
+           this.appointmentDate = DateTime.Today.AddDays(daysFromNow);
+       }
+   }
+   ```
+
+   In this example, `daysFromNow` is an optional parameter with a default value of 7. If `daysFromNow` is not provided when creating a `MedicalAppointment`, it defaults to 7 days from today.
+
+2. **Usage of Optional Parameters:**
+   Optional parameters can be omitted when calling the constructor or method, and the default value will be used instead.
+
+   ```csharp
+   // Creating a MedicalAppointment with and without specifying daysFromNow
+   var appointment1 = new MedicalAppointment("John Doe");        // Uses default daysFromNow (7 days)
+   var appointment2 = new MedicalAppointment("Jane Smith", 10);  // Specifies daysFromNow as 10
+   ```
+
+   - `appointment1` will have `patientName` set to "John Doe" and `appointmentDate` set to today + 7 days.
+   - `appointment2` will have `patientName` set to "Jane Smith" and `appointmentDate` set to today + 10 days.
+
+3. **Limitations:**
+   - Default values must be compile-time constants. Complex expressions that can only be evaluated at runtime cannot be used.
+   - Optional parameters must appear after all required parameters. They cannot precede required parameters in the parameter list.
+
+4. **Ambiguity and Best Practices:**
+   - When overloading methods or constructors with optional parameters, if a method without optional parameters matches the provided arguments, it takes precedence over the one with optional parameters.
+   - It's recommended to use optional parameters sparingly to avoid confusion. If a method has many optional parameters, it might be a sign that the method is trying to do too much and could benefit from refactoring.
+
+### Example Scenario:
+
+Consider a scenario where you have constructors for `MedicalAppointment`:
+
+```csharp
+public MedicalAppointment(string patientName, int daysFromNow = 7)
+{
+    this.patientName = patientName;
+    this.appointmentDate = DateTime.Today.AddDays(daysFromNow);
+}
+
+public MedicalAppointment(string patientName)
+{
+    this.patientName = patientName;
+    this.appointmentDate = DateTime.Today.AddDays(7); // Default 7 days from today
+}
+```
+
+In this case:
+- Calling `new MedicalAppointment("John Doe")` would use the constructor with a single parameter (`patientName`) and default `daysFromNow` to 7 days.
+- Calling `new MedicalAppointment("Jane Smith", 10)` explicitly sets `daysFromNow` to 10 days from today.
+
+Using optional parameters can streamline your code and make it more readable when used appropriately. However, it's crucial to ensure that the default values and their usage align with the expected behavior of your class or method.
