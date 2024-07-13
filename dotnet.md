@@ -2342,7 +2342,9 @@ In this lecture, we will learn about lists, understand how they differ from arra
 ## Introduction to Lists
 
 ### Arrays vs. Lists
+
 - **Arrays**:
+
   - Have a fixed size.
   - Once created, the size cannot be changed.
   - Suitable when the size of the collection is known upfront (e.g., coordinates of a triangle, chessboard).
@@ -2355,13 +2357,16 @@ In this lecture, we will learn about lists, understand how they differ from arra
 ### Declaring and Initializing a List
 
 To declare and initialize a list of strings:
+
 ```csharp
 List<string> words = new List<string>();
 ```
+
 - `List` is a class, so we use the `new` keyword to create it.
 - Angle brackets `<string>` specify the type of elements in the list.
-  
+
 Alternatively, we can initialize a list with items:
+
 ```csharp
 List<string> words = new List<string> { "apple", "banana", "cherry" };
 ```
@@ -2369,6 +2374,7 @@ List<string> words = new List<string> { "apple", "banana", "cherry" };
 ### Properties and Methods
 
 - **Count Property**:
+
   - Similar to the `Length` property in arrays, but called `Count` for lists.
   - Example:
     ```csharp
@@ -2376,6 +2382,7 @@ List<string> words = new List<string> { "apple", "banana", "cherry" };
     ```
 
 - **Add Method**:
+
   - Adds an element to the list.
   - Example:
     ```csharp
@@ -2384,6 +2391,7 @@ List<string> words = new List<string> { "apple", "banana", "cherry" };
     ```
 
 - **Remove Method**:
+
   - Removes the first occurrence of the specified element.
   - Example:
     ```csharp
@@ -2392,6 +2400,7 @@ List<string> words = new List<string> { "apple", "banana", "cherry" };
     ```
 
 - **RemoveAt Method**:
+
   - Removes the element at the specified index.
   - Example:
     ```csharp
@@ -2400,6 +2409,7 @@ List<string> words = new List<string> { "apple", "banana", "cherry" };
     ```
 
 - **AddRange Method**:
+
   - Adds a range of elements to the list.
   - Example:
     ```csharp
@@ -2408,6 +2418,7 @@ List<string> words = new List<string> { "apple", "banana", "cherry" };
     ```
 
 - **IndexOf Method**:
+
   - Returns the index of the first occurrence of a specified element.
   - Returns `-1` if the element is not found.
   - Example:
@@ -2417,6 +2428,7 @@ List<string> words = new List<string> { "apple", "banana", "cherry" };
     ```
 
 - **Contains Method**:
+
   - Checks if an element exists in the list.
   - Returns a boolean value.
   - Example:
@@ -2436,12 +2448,14 @@ List<string> words = new List<string> { "apple", "banana", "cherry" };
 ### Using `foreach` Loop with Lists
 
 The `foreach` loop is an efficient way to iterate over lists:
+
 ```csharp
 foreach (string word in words)
 {
     Console.WriteLine(word);
 }
 ```
+
 # Lecture Notes: Understanding the `out` Keyword in C#
 
 In this lecture, we will learn about the `out` keyword, its purpose, and how to use it. Understanding this concept will help us handle user input more effectively in our to-do list app.
@@ -2449,17 +2463,22 @@ In this lecture, we will learn about the `out` keyword, its purpose, and how to 
 ## The Need for the `out` Keyword
 
 ### Scenario
+
 We want to read a number provided by the user and validate if the input is actually a number. Previously, we either:
+
 - Ignored invalid input, letting the app crash if it wasn't parsable to an `int`.
 - Checked if all characters in the input were digits.
 
 There is a better way using the `TryParse` method, which we'll cover in the next lecture. First, we need to understand the `out` keyword.
 
 ### Returning Multiple Values
+
 Sometimes, we need to return more than one result from a method. For example:
+
 - Given an array of numbers, return a list of positive numbers and the count of non-positive numbers.
 
 ### Example without `out`
+
 ```csharp
 public List<int> GetPositiveNumbers(int[] numbers)
 {
@@ -2474,12 +2493,15 @@ public List<int> GetPositiveNumbers(int[] numbers)
     return result;
 }
 ```
+
 This method returns a list of positive numbers but doesn't provide the count of non-positive numbers.
 
 ## Using the `out` Keyword
 
 ### Method Definition with `out`
+
 To also return the count of non-positive numbers:
+
 ```csharp
 public List<int> GetPositiveNumbers(int[] numbers, out int countOfNonPositive)
 {
@@ -2500,7 +2522,9 @@ public List<int> GetPositiveNumbers(int[] numbers, out int countOfNonPositive)
     return result;
 }
 ```
+
 ### Calling the Method with `out`
+
 ```csharp
 int[] numbers = { -1, 2, -3, 4, 0 };
 int nonPositiveCount;
@@ -2511,11 +2535,14 @@ Console.WriteLine("Count of Non-Positive Numbers: " + nonPositiveCount);
 ```
 
 ### Key Points
+
 1. **Parameter Declaration**:
+
    - In the method signature, the parameter is declared with the `out` modifier.
    - Inside the method, this parameter must be assigned a value before the method returns.
 
 2. **Method Call**:
+
    - When calling the method, the `out` keyword must be used with the variable passed as the `out` parameter.
    - This variable does not need to be initialized before being passed to the method.
 
@@ -2523,9 +2550,11 @@ Console.WriteLine("Count of Non-Positive Numbers: " + nonPositiveCount);
    - Inside the method, the `out` parameter is treated as an uninitialized variable and must be assigned a value.
 
 ### Why `out` is Necessary
+
 Without the `out` keyword, passing a variable to a method creates a copy. Any modifications inside the method do not affect the original variable. The `out` keyword allows the method to directly modify the passed variable.
 
 ### Example without `out`
+
 ```csharp
 public List<int> GetPositiveNumbers(int[] numbers, int countOfNonPositive)
 {
@@ -2553,6 +2582,7 @@ List<int> positiveNumbers = GetPositiveNumbers(numbers, nonPositiveCount);
 
 Console.WriteLine("Count of Non-Positive Numbers: " + nonPositiveCount); // Output: 0
 ```
+
 The output is incorrect because the `countOfNonPositive` variable inside the method is a copy of the original variable.
 
 # Lecture Notes: Parsing Strings to Integers with TryParse
@@ -2562,20 +2592,25 @@ In this lecture, we will learn how to parse a string to an integer without riski
 ## Parsing Strings to Integers
 
 ### The Problem with `int.Parse`
+
 Previously, we used the `int.Parse` method to convert a string to an integer. While this method works, it causes a runtime error if the input is not a valid number.
 
 ### Example of `int.Parse`
+
 ```csharp
 string input = "abc";
 int number = int.Parse(input); // This will throw a runtime error
 ```
 
 ### Solution: `TryParse`
+
 The `TryParse` method addresses this issue by:
+
 1. Returning a `bool` indicating whether the parsing was successful.
 2. Using an `out` parameter to return the parsed integer if the parsing is successful.
 
 ### Syntax of `TryParse`
+
 ```csharp
 string input = "123";
 bool isParsed = int.TryParse(input, out int number);
@@ -2591,11 +2626,13 @@ else
 ```
 
 ### Key Points
+
 1. **Return Type**: `TryParse` returns a `bool` indicating success or failure.
 2. **Out Parameter**: If parsing is successful, the parsed integer is assigned to the `out` parameter.
 3. **Default Value**: If parsing fails, the `out` parameter is set to the default value for integers (0).
 
 ### Example in Practice
+
 ```csharp
 string input = "456";
 bool isParsed = int.TryParse(input, out int number);
@@ -2611,9 +2648,11 @@ else
 ```
 
 ### Handling User Input
+
 To keep asking the user for a valid number until they provide one, we can use a `do-while` loop.
 
 ### Example with `do-while` Loop
+
 ```csharp
 bool isParsed;
 int number;
@@ -2634,9 +2673,11 @@ Console.WriteLine("You entered a valid number: " + number);
 ```
 
 ## Formatting Code with Keyboard Shortcut
+
 If the formatting of your code gets messy, you can use the `Ctrl+K+D` shortcut in Visual Studio to automatically format it.
 
 ### Example of Code Formatting
+
 ```csharp
 // Messy code
 Console.WriteLine("Please enter a number:");string input = Console.ReadLine();
@@ -2657,22 +2698,18 @@ else
 ```
 
 ### Steps to Format Code
+
 1. Select the code you want to format.
 2. Press `Ctrl+K+D`.
 
 ## Summary
+
 - The `TryParse` method is a safer alternative to `int.Parse` for converting strings to integers.
 - It returns a `bool` indicating success and uses an `out` parameter to return the parsed integer.
 - Use a `do-while` loop to repeatedly ask the user for input until a valid number is provided.
 - The `Ctrl+K+D` shortcut in Visual Studio can quickly format your code.
 
 With these tools and techniques, we are now ready to finish the implementation of our to-do list app.
-
-
-
-
-
-
 
 # Lecture Notes: Understanding the Need for Object-Oriented Programming
 
@@ -2681,11 +2718,13 @@ In this lecture, we will analyze the issues in the code of the Todo list app. Th
 ## Procedural Programming
 
 ### Structure of the Todo List App
+
 - The program is simple and executes code from top to bottom.
 - Methods are created to improve readability and reusability.
 - The main logic is centralized in one file, which can become unwieldy as the application grows.
 
 ### Problems with Procedural Programming
+
 1. **Scalability**: As the application grows, the file size increases, making the code harder to read and maintain.
 2. **Limited Access Control**: There is no way to limit access to certain functions, which can be necessary for maintaining critical data.
 3. **Complex Main Logic**: Even with functions moved to separate files, the main logic remains long and complex.
@@ -2693,21 +2732,26 @@ In this lecture, we will analyze the issues in the code of the Todo list app. Th
 5. **Hard to Adapt to Changes**: Procedural code is not flexible enough to adapt to new requirements or changes in existing requirements, such as switching from console input to a graphical user interface or adding new storage options (local vs. cloud).
 
 ### Example of Procedural Code Issues
+
 - If a user wants to switch from storing TODOs locally to storing them in the cloud, procedural code would require numerous `if` statements, making the code harder to maintain and extend.
 
 ## Anti-patterns: Spaghetti Code
+
 - **Definition**: Spaghetti code is a disorganized and tangled codebase that is difficult to follow and maintain.
-- **Problems**: 
+- **Problems**:
   - Hard to modify a single part without affecting others.
   - Future changes are painful and error-prone.
 
 ## High-Quality Code Requirements
+
 - Must be easy to modify and extend.
 - Should accommodate changes in requirements without major refactoring.
 - Needs to separate high-level logic from low-level details for better maintainability and flexibility.
 
 ## Object-Oriented Programming (OOP)
+
 ### Introduction to OOP
+
 - **Origin**: Developed in the 1960s and gained popularity in the 1990s.
 - **Purpose**: To address the limitations of procedural programming by organizing code into objects that encapsulate data and behavior.
 - **Main Concepts**:
@@ -2717,17 +2761,20 @@ In this lecture, we will analyze the issues in the code of the Todo list app. Th
   - **Polymorphism**: Allowing methods to do different things based on the object they are called on.
 
 ### Benefits of OOP
+
 1. **Improved Modularity**: Code is organized into discrete objects, making it easier to manage and understand.
 2. **Enhanced Reusability**: Objects and classes can be reused across different parts of the application.
 3. **Better Maintainability**: Changes in requirements can be managed more efficiently due to the modular nature of OOP.
 4. **Scalability**: Applications can grow without becoming unmanageable.
 
 ### Example of OOP Structure
+
 - **Class Definition**: A blueprint for creating objects (instances).
 - **Objects**: Instances of classes that encapsulate data and behavior.
 - **Methods**: Functions defined within classes that operate on the object's data.
 
 ## Summary
+
 - Procedural programming can lead to complex, unmanageable codebases, especially as applications grow.
 - Spaghetti code is an example of an anti-pattern that results from procedural programming.
 - High-quality code should be modular, maintainable, and adaptable to changes.
@@ -2740,6 +2787,7 @@ By understanding these concepts, we are better prepared to create robust, scalab
 ## What is Object-Oriented Programming (OOP)?
 
 **Definition:**
+
 - Object-oriented programming is a coding paradigm focused on the concept of objects, which contain data and methods.
 - These objects can model real-world features like a person or an address, as well as more abstract concepts like database connections.
 
@@ -2762,7 +2810,7 @@ By understanding these concepts, we are better prepared to create robust, scalab
 
 ### Abstract Concepts in OOP
 
-- **Example**: 
+- **Example**:
   - `DatabaseConnector` object provides communication with a database.
   - `TextFileReader` object reads files from the computer's memory and returns their content as strings.
 
@@ -2806,12 +2854,12 @@ These fundamental concepts will be covered in more detail once we have some hand
 - **Benefits** of OOP include modularity, maintainability, reusability, flexibility, understandability, and control.
 - **Fundamental Concepts** of OOP (encapsulation, polymorphism, abstraction, inheritance) are crucial and will be explored further in practical examples.
 
-
 # Lecture Notes: Practical Use of Object-Oriented Programming with DateTime
 
 ## Introduction to Object-Oriented Programming with DateTime
 
 **Objective:**
+
 - Understand the practical application of object-oriented programming (OOP) using the DateTime type in C#.
 - Learn about constructors and their role in creating instances of classes and structs.
 
@@ -2835,6 +2883,7 @@ These fundamental concepts will be covered in more detail once we have some hand
 - **Constructor**: A special method used to create new instances of a class or struct. Can take parameters to initialize the instance.
 
 #### Example:
+
 ```csharp
 DateTime internationalPizzaDay2022 = new DateTime(2023, 2, 9);
 ```
@@ -2845,8 +2894,9 @@ DateTime internationalPizzaDay2022 = new DateTime(2023, 2, 9);
 ### Retrieving Data from a DateTime Object
 
 - **Accessing Data**: Use properties to retrieve the year, month, and day.
-  
+
 #### Example:
+
 ```csharp
 Console.WriteLine(internationalPizzaDay2022.Year);  // Outputs: 2023
 Console.WriteLine(internationalPizzaDay2022.Month); // Outputs: 2
@@ -2858,6 +2908,7 @@ Console.WriteLine(internationalPizzaDay2022.Day);   // Outputs: 9
 - **Methods**: DateTime objects contain methods to manipulate dates, such as adding years, months, or days.
 
 #### Example:
+
 ```csharp
 DateTime nextYear = internationalPizzaDay2022.AddYears(1);
 Console.WriteLine(nextYear); // Outputs: 2024-02-09 00:00:00
@@ -2866,8 +2917,9 @@ Console.WriteLine(nextYear); // Outputs: 2024-02-09 00:00:00
 ### Calculating the Day of the Week
 
 - **Day of the Week**: Use the `DayOfWeek` property to find out what day of the week a date falls on.
-  
+
 #### Example:
+
 ```csharp
 Console.WriteLine(internationalPizzaDay2022.DayOfWeek); // Outputs: Thursday
 ```
@@ -2893,6 +2945,7 @@ In the next lecture, we will dive deeper into constructors and how they are used
 ## Introduction to Abstraction
 
 **Objective:**
+
 - Learn what abstraction is in object-oriented programming (OOP).
 - Understand the benefits of hiding implementation details from the users of a class.
 
@@ -2955,6 +3008,7 @@ In the next lectures, we will continue to explore other fundamental OOP concepts
 ## Introduction to Classes
 
 **Objective:**
+
 - Define your first C# class.
 - Understand what fields are and their default values.
 - Learn about the default constructor.
@@ -3078,6 +3132,7 @@ By understanding these concepts, you can start creating and working with your ow
 ## Introduction
 
 **Objective:**
+
 - Understand what data hiding is and its benefits.
 - Learn about class members and access modifiers.
 - Explore the effects of public and private access modifiers.
@@ -3231,6 +3286,7 @@ Understanding and utilizing data hiding and access modifiers will help you creat
 ## Introduction
 
 **Objective:**
+
 - Define custom constructors in a class.
 - Understand the recommended naming conventions for fields.
 
@@ -3369,6 +3425,7 @@ Understanding how to define and use custom constructors is essential for creatin
 ## Introduction
 
 **Objective:**
+
 - Understand the requirement for C# code to be within classes.
 - Learn about top-level statements introduced in .NET 6.
 
@@ -3560,6 +3617,7 @@ class Program
 ### Summary
 
 In this example, we covered:
+
 - Defining a class (`Rectangle`) with private fields and a constructor.
 - Adding public methods (`CalculateArea` and `CalculateCircumference`) to perform calculations on the class's data.
 - Explaining the default access modifier (private) for methods and how to make them accessible (public).
@@ -3574,6 +3632,7 @@ In object-oriented programming, encapsulation and data hiding are closely relate
 Encapsulation refers to the bundling of data (attributes) and methods (functions) that operate on the data into a single unit, typically a class. The idea is to keep the implementation details of an object hidden from the outside world, while exposing a public interface through which other parts of the program can interact with the object. This helps in organizing code logically and promotes modularity and reusability.
 
 **Benefits of Encapsulation:**
+
 1. **Modularity:** Each class encapsulates its own functionality, promoting easier maintenance and updates.
 2. **Information Hiding:** By controlling access to data (making fields private), encapsulation helps prevent unauthorized access and ensures data integrity.
 3. **Ease of Use:** Users of a class only need to know its public interface (methods), not its internal details, making code simpler and less error-prone.
@@ -3583,6 +3642,7 @@ Encapsulation refers to the bundling of data (attributes) and methods (functions
 Data hiding, on the other hand, is a specific aspect of encapsulation. It involves making the internal state (fields or properties) of a class private, so they cannot be directly accessed or modified from outside the class. Instead, access is controlled through public methods (getters and setters) that enforce validation rules or perform necessary actions when data is accessed or modified.
 
 **Why Data Hiding Matters:**
+
 1. **Maintaining Consistency:** By restricting direct access to data, we can ensure that the data remains in a valid state.
 2. **Encouraging Proper Usage:** Users of a class are encouraged to interact with the object through defined methods, reducing the risk of unintended side effects or errors.
 3. **Flexibility in Implementation:** Internal details of a class can be changed without affecting other parts of the program, as long as the public interface remains consistent.
@@ -3608,7 +3668,6 @@ Method overloading is the practice of defining multiple methods in the same clas
 ### Rules for Method Overloading
 
 1. **Parameter Signature Must Differ:** Two methods in the same class cannot have the exact same parameter types in the same order. This means that the compiler must be able to distinguish between overloaded methods based on their parameter types or number.
-   
 2. **Return Type Overloading Not Allowed:** Overloading based solely on return type is not allowed in C#. Methods must be distinguished by their parameter types or numbers, not by their return types.
 
 ### Example of Correct Method Overloading
@@ -3705,6 +3764,7 @@ public class MedicalAppointment
 ### Explanation
 
 1. **Multiple Constructors:** The `MedicalAppointment` class now has three constructors:
+
    - One that initializes both `patientName` and `appointmentDate`.
    - One that initializes only `patientName` and defaults `appointmentDate` to a week from the current date.
    - One that initializes `patientName` and calculates `appointmentDate` based on a specified number of days from the current date.
@@ -3716,7 +3776,6 @@ public class MedicalAppointment
 ### Benefits of Constructor Overloading
 
 - **Code Reusability:** By overloading constructors and using the `this` keyword to delegate initialization logic, we avoid duplicating code and adhere to the DRY (Don't Repeat Yourself) principle.
-  
 - **Flexibility:** Users of the class can initialize objects in different ways based on their specific needs, whether providing all parameters or using default values provided by overloaded constructors.
 
 ### Conclusion
@@ -3728,7 +3787,6 @@ Expression-bodied methods in C# are a concise and modern way to define methods t
 ### Expression vs Statement
 
 - **Expression:** Evaluates to a value. Examples include arithmetic operations (`1 + 2`), method calls that return a value (`GetString()`), or even a simple variable (`x`).
-  
 - **Statement:** Performs an action and does not return a value. Examples include method calls like `Console.WriteLine("Hello")`, conditional statements (`if`), or loops (`for`).
 
 ### Using Expression-Bodied Methods
@@ -3751,7 +3809,6 @@ public int Add(int a, int b) => a + b;
 ### Benefits:
 
 1. **Conciseness:** Reduces boilerplate code, especially for simple methods.
-   
 2. **Readability:** Makes the intent of the method clearer by focusing on what the method returns rather than the mechanics of returning it.
 
 3. **Modern C# Usage:** Embraces newer features of the language that promote cleaner, more maintainable code.
@@ -3783,6 +3840,7 @@ The "this" keyword in C# serves two primary purposes within a class context: ref
 When you use the "this" keyword, you're explicitly referring to the current instance of the class. This is particularly useful in scenarios where you need to pass the current object instance as an argument or use its methods and properties within the class itself.
 
 #### Example:
+
 ```csharp
 public class MedicalAppointment
 {
@@ -3820,6 +3878,7 @@ In the `Reschedule` method, `this.appointmentDate` refers to the instance field 
 Another use case for the "this" keyword is to disambiguate between instance variables and local variables or parameters that have the same name. This situation typically arises when method parameters have the same name as instance fields.
 
 #### Example:
+
 ```csharp
 public class MedicalAppointment
 {
@@ -3842,7 +3901,6 @@ Here, `this.patientName` inside the constructor and `SetPatientName` method ensu
 ### Best Practices
 
 - **Naming Conventions:** Following standard naming conventions (like prefixing private fields with an underscore `_`) can reduce the need for using `this` to disambiguate names.
-  
 - **Clarity:** While using `this` can make your intentions clear, overusing it where unnecessary might clutter the code. Use it judiciously where it enhances readability and clarifies intent.
 
 Understanding and correctly using the "this" keyword in C# helps maintain code clarity and ensures correct referencing of instance members within class methods and constructors.
@@ -3884,6 +3942,7 @@ Using optional parameters in C# is a powerful feature that allows constructors a
    - `appointment2` will have `patientName` set to "Jane Smith" and `appointmentDate` set to today + 10 days.
 
 3. **Limitations:**
+
    - Default values must be compile-time constants. Complex expressions that can only be evaluated at runtime cannot be used.
    - Optional parameters must appear after all required parameters. They cannot precede required parameters in the parameter list.
 
@@ -3910,7 +3969,842 @@ public MedicalAppointment(string patientName)
 ```
 
 In this case:
+
 - Calling `new MedicalAppointment("John Doe")` would use the constructor with a single parameter (`patientName`) and default `daysFromNow` to 7 days.
 - Calling `new MedicalAppointment("Jane Smith", 10)` explicitly sets `daysFromNow` to 10 days from today.
 
 Using optional parameters can streamline your code and make it more readable when used appropriately. However, it's crucial to ensure that the default values and their usage align with the expected behavior of your class or method.
+
+Validating constructor parameters is crucial to ensure that objects are created with valid data. Let's go through the process of adding validation to constructor parameters and learn about the `nameof` expression and why having public fields can be risky.
+
+### Validating Constructor Parameters
+
+To ensure that our `Rectangle` class only accepts valid widths and heights, we can add validation logic to the constructor. Here’s an updated version of the `Rectangle` class with validation:
+
+```csharp
+public class Rectangle
+{
+    public int Width { get; private set; }
+    public int Height { get; private set; }
+
+    public Rectangle(int width, int height)
+    {
+        Width = ValidateParameter(width, nameof(Width));
+        Height = ValidateParameter(height, nameof(Height));
+    }
+
+    private int ValidateParameter(int value, string paramName)
+    {
+        if (value <= 0)
+        {
+            Console.WriteLine($"{paramName} must be positive. Setting default value to 1.");
+            return 1;
+        }
+        return value;
+    }
+}
+```
+
+### `nameof` Expression
+
+The `nameof` expression is a feature in C# that returns the name of a variable, type, or member as a string. It's particularly useful for ensuring that names in your code are consistent and reducing the risk of errors during refactoring.
+
+In the above code, `nameof(Width)` and `nameof(Height)` return the strings `"Width"` and `"Height"` respectively. This way, if we rename the `Width` or `Height` properties in the future, the `nameof` expressions will automatically update, avoiding the need to manually change string literals.
+
+### Risks of Public Fields
+
+Having public fields can be risky because it allows external code to modify the fields directly, bypassing any validation logic. This can lead to invalid states in your objects. In our `Rectangle` class, making `Width` and `Height` public would allow anyone to assign negative values to them, even though we validated them in the constructor.
+
+To mitigate this risk, we should make the fields private and provide public properties with private setters or public read-only properties:
+
+```csharp
+public class Rectangle
+{
+    private int width;
+    private int height;
+
+    public int Width
+    {
+        get => width;
+        private set => width = ValidateParameter(value, nameof(Width));
+    }
+
+    public int Height
+    {
+        get => height;
+        private set => height = ValidateParameter(value, nameof(Height));
+    }
+
+    public Rectangle(int width, int height)
+    {
+        Width = width;
+        Height = height;
+    }
+
+    private int ValidateParameter(int value, string paramName)
+    {
+        if (value <= 0)
+        {
+            Console.WriteLine($"{paramName} must be positive. Setting default value to 1.");
+            return 1;
+        }
+        return value;
+    }
+}
+```
+
+### Summary
+
+- **Validation:** Ensures that objects are created with valid data by adding validation logic in the constructor or properties.
+- **`nameof` Expression:** Helps maintain code consistency and reduces errors during refactoring by returning the name of a variable, type, or member as a string.
+- **Public Fields Risks:** Public fields can be modified directly, bypassing validation logic. Using private fields with public properties ensures validation is applied consistently.
+
+By following these practices, we can create robust and maintainable classes that enforce their own invariants and protect against invalid states.
+
+### Preventing Field Modification with `readonly`
+
+To ensure fields are never set to invalid values, you can use the `readonly` modifier. A `readonly` field can only be assigned at the time of declaration or within a constructor. Once the object is constructed, it is not possible to change the value of a `readonly` field.
+
+Here is an updated version of the `Rectangle` class using `readonly` fields:
+
+```csharp
+public class Rectangle
+{
+    public readonly int Width;
+    public readonly int Height;
+
+    public Rectangle(int width, int height)
+    {
+        Width = ValidateParameter(width, nameof(Width));
+        Height = ValidateParameter(height, nameof(Height));
+    }
+
+    private int ValidateParameter(int value, string paramName)
+    {
+        if (value <= 0)
+        {
+            Console.WriteLine($"{paramName} must be positive. Setting default value to 1.");
+            return 1;
+        }
+        return value;
+    }
+}
+```
+
+In this code, the `Width` and `Height` fields are `readonly`, meaning they can only be assigned during object construction and cannot be modified afterward.
+
+### Immutable Objects
+
+Making all fields of an object `readonly` makes the whole object immutable. Immutability means that once an object is created, it will never be modified. Immutable objects have various advantages, such as easier reasoning about program behavior and better concurrency properties, because their state cannot change after they are created.
+
+### `const` vs. `readonly`
+
+#### `const`
+
+- A `const` field must be assigned at declaration and cannot be modified afterward.
+- The value assigned to a `const` field must be a compile-time constant.
+- `const` fields are implicitly static, meaning they belong to the type itself rather than any instance.
+- `const` fields are typically used for values that are known at compile time and do not change, such as mathematical constants or fixed configuration values.
+
+Here is an example of using `const`:
+
+```csharp
+public class Constants
+{
+    public const int RectangleSides = 4;
+}
+```
+
+#### `readonly`
+
+- A `readonly` field can be assigned either at declaration or within a constructor.
+- The value of a `readonly` field can be set at runtime, but once set, it cannot be changed.
+- `readonly` fields are used when the value should not change after the object is constructed, but the exact value may not be known until runtime.
+
+Here is an example of using `readonly`:
+
+```csharp
+public class Rectangle
+{
+    public readonly int Width;
+    public readonly int Height;
+
+    public Rectangle(int width, int height)
+    {
+        Width = width;
+        Height = height;
+    }
+}
+```
+
+### Example: `Rectangle` Class with `const` and `readonly`
+
+Here’s an example that combines `const` and `readonly` fields:
+
+```csharp
+public class Rectangle
+{
+    public const int Sides = 4; // Known at compile-time, never changes
+    public readonly int Width;  // Set at runtime, cannot be changed afterward
+    public readonly int Height; // Set at runtime, cannot be changed afterward
+
+    public Rectangle(int width, int height)
+    {
+        Width = ValidateParameter(width, nameof(Width));
+        Height = ValidateParameter(height, nameof(Height));
+    }
+
+    private int ValidateParameter(int value, string paramName)
+    {
+        if (value <= 0)
+        {
+            Console.WriteLine($"{paramName} must be positive. Setting default value to 1.");
+            return 1;
+        }
+        return value;
+    }
+}
+```
+
+In this example, `Sides` is a `const` field, and `Width` and `Height` are `readonly` fields. This design ensures that the number of sides of a rectangle is fixed and known at compile-time, while the width and height are validated and set during object construction and cannot be changed afterward.
+
+### Understanding the Limitations of Fields and Introducing Methods
+
+In the previous lecture, we made fields `readonly` to avoid the risk of setting them to invalid values. However, what if we want to allow these fields to be assigned again, at least within the `Rectangle` class? Essentially, we want these fields to be public for reading but private for writing.
+
+This approach ensures that developers of this class have full control over how these fields are set and can validate the values they are set to. However, with fields alone, this is not possible.
+
+Let's see how we can address this using methods:
+
+1. **Making Fields Private and Adding Getter Methods**
+
+   First, we make the fields private and create methods to read their values.
+
+   ```csharp
+   public class Rectangle
+   {
+       private int height;
+
+       public Rectangle(int height)
+       {
+           this.height = height;
+       }
+
+       public int GetHeight()
+       {
+           return height;
+       }
+   }
+   ```
+
+   Now, the `height` field is private, and we have a `GetHeight` method to read its value from outside the class. However, setting this field is not possible from the outside as there is no `SetHeight` method.
+
+2. **Adding Setter Methods with Validation**
+
+   We may sometimes want to add extra logic when setting the field's value, such as validating if the value being set is valid. We can do this by adding a setter method:
+
+   ```csharp
+   public class Rectangle
+   {
+       private int height;
+
+       public Rectangle(int height)
+       {
+           this.height = ValidateHeight(height);
+       }
+
+       public int GetHeight()
+       {
+           return height;
+       }
+
+       public void SetHeight(int height)
+       {
+           this.height = ValidateHeight(height);
+       }
+
+       private int ValidateHeight(int height)
+       {
+           if (height <= 0)
+           {
+               Console.WriteLine("Height must be positive. Setting default value to 1.");
+               return 1;
+           }
+           return height;
+       }
+   }
+   ```
+
+   In this example, we have added a `SetHeight` method that validates the value before setting it. We removed the `readonly` keyword to allow the field to be modified within the class.
+
+### Moving Towards Properties
+
+In many cases, instead of having public fields, it is better to have them private and expose special methods (getter and setter) to manipulate them. These getter and setter methods are so commonly used that the creators of C# introduced properties as a part of the language to simplify this pattern.
+
+### Properties in C#
+
+Properties in C# are a way to provide controlled access to the fields of a class. They allow you to define getter and setter methods more concisely. Properties can include logic for validation or other processing whenever a field is read or written.
+
+In the next lecture, we will dive into properties and how they can help us manage the access and modification of fields in a more elegant and concise manner.
+
+### Introduction to Properties
+
+In this lecture, we will learn about properties in C#. This is a crucial topic, so let's focus and understand it well. Properties will be used extensively throughout the course, so you will have many opportunities to get familiar with them.
+
+We will cover:
+
+- What properties are and how they are used.
+- The concept of backing fields and accessors.
+- Differences between fields and properties.
+- When to use fields and when to use properties.
+
+### Recap: Methods for Getting and Setting Field Values
+
+In the previous lecture, we saw that instead of having a simple public field, it's often better to use methods for getting and setting its value. For example, instead of directly accessing the `height` field, we used `GetHeight` and `SetHeight` methods.
+
+### Introducing Properties
+
+Instead of creating getter and setter methods manually, we can use properties. Let's look at how properties are defined and used.
+
+1. **Defining Properties (Old Syntax)**
+
+   Let's start with the old way of defining properties, which shows better what is happening under the hood.
+
+   ```csharp
+   public class Rectangle
+   {
+       private int _width;
+
+       public int Width
+       {
+           get { return _width; }
+           set { _width = value; }
+       }
+   }
+   ```
+
+   - `_width` is a private field (backing field).
+   - `Width` is a public property with `get` and `set` accessors.
+   - The getter returns the value of `_width`.
+   - The setter assigns a new value to `_width`.
+
+2. **Adding Validation in the Setter**
+
+   We can add validation logic to the setter.
+
+   ```csharp
+   public int Width
+   {
+       get { return _width; }
+       set
+       {
+           if (value <= 0)
+           {
+               Console.WriteLine("Width must be positive. Setting default value to 1.");
+               _width = 1;
+           }
+           else
+           {
+               _width = value;
+           }
+       }
+   }
+   ```
+
+   This setter ensures that the width is always positive.
+
+3. **Using Properties**
+
+   From outside the class, properties are used like fields.
+
+   ```csharp
+   Rectangle rect = new Rectangle();
+   rect.Width = 15; // This will call the setter
+   int width = rect.Width; // This will call the getter
+   ```
+
+4. **Modern Syntax for Properties**
+
+   The modern, shorter syntax for properties can be used if the getter and setter only get and set the backing field.
+
+   ```csharp
+   public int Width { get; set; }
+   ```
+
+   The compiler automatically generates the backing field. This is equivalent to the longer syntax shown earlier.
+
+### Differences Between Fields and Properties
+
+1. **Conceptual Differences**
+
+   - **Fields** are like variables.
+   - **Properties** are like methods used to get or set values of private fields.
+
+2. **Access Modifiers**
+
+   - For properties, we can have different access modifiers for the getter and setter.
+   - For fields, this is not possible.
+
+   ```csharp
+   public int Width { get; private set; }
+   ```
+
+   This property can be read publicly but can only be set privately.
+
+3. **Polymorphism**
+
+   - Properties can be overridden in derived classes (like methods).
+   - Fields cannot be overridden.
+
+### When to Use Fields vs. Properties
+
+- **Fields** should always be private.
+- **Properties** should be used to expose components of a class to the outside world.
+
+### Summary
+
+- Properties provide a way to control the access and modification of fields.
+- They can include logic for validation or other processing.
+- Using properties can help avoid many issues associated with directly accessing fields.
+
+In the next lectures, we will dive deeper into properties and explore more advanced topics in object-oriented programming. This will give you a solid understanding of when and how to use properties effectively.
+
+### Introduction to Object Initializers and the `init` Accessor
+
+In this video, we will learn about object initializers and the `init` accessor. Object initializers provide a convenient way to set properties when creating an object. The `init` accessor, introduced in C# 9, allows for immutability while still enabling initialization through object initializers.
+
+### Understanding Object Initializers
+
+1. **Basic Usage**
+
+   Let's start with a simple `Person` class with two properties: `Name` and `YearOfBirth`.
+
+   ```csharp
+   public class Person
+   {
+       public string Name { get; set; }
+       public int YearOfBirth { get; set; }
+   }
+   ```
+
+   Typically, we would create an instance of this class using a constructor:
+
+   ```csharp
+   Person person = new Person();
+   person.Name = "John";
+   person.YearOfBirth = 1981;
+   ```
+
+   Alternatively, we can use an object initializer:
+
+   ```csharp
+   Person person = new Person
+   {
+       Name = "John",
+       YearOfBirth = 1981
+   };
+   ```
+
+   This approach gives the same result as using the constructor followed by property assignments.
+
+2. **Partial Initialization**
+
+   We don't need to set all the properties when using object initializers. If we skip some properties, they will be assigned their default values.
+
+   ```csharp
+   Person person = new Person
+   {
+       Name = "John"
+   };
+   // YearOfBirth will be set to 0 (default value for int)
+   ```
+
+3. **Using Constructors with Object Initializers**
+
+   We can use object initializers with constructors that take parameters:
+
+   ```csharp
+   public Person(string name)
+   {
+       Name = name;
+   }
+
+   Person person = new Person("John")
+   {
+       YearOfBirth = 1981
+   };
+   ```
+
+   In this case, the constructor sets the `Name` property, and the object initializer sets the `YearOfBirth` property.
+
+   If a property is set in both the constructor and the object initializer, the value from the object initializer takes precedence.
+
+### Limitations and the `init` Accessor
+
+1. **Setters are Required**
+
+   Object initializers only work if the properties have public setters. If a setter is not present or is private, object initialization will not work.
+
+   ```csharp
+   public class Person
+   {
+       public string Name { get; }
+       public int YearOfBirth { get; set; }
+   }
+
+   Person person = new Person
+   {
+       // Name = "John" // This will cause a compilation error
+       YearOfBirth = 1981
+   };
+   ```
+
+2. **Introducing the `init` Accessor**
+
+   With C# 9, a new accessor called `init` has been introduced. This allows properties to be set during object initialization but not modified afterward.
+
+   ```csharp
+   public class Person
+   {
+       public string Name { get; init; }
+       public int YearOfBirth { get; init; }
+   }
+
+   Person person = new Person
+   {
+       Name = "John",
+       YearOfBirth = 1981
+   };
+
+   // After object creation, the properties cannot be changed
+   // person.Name = "Doe"; // This will cause a compilation error
+   ```
+
+### Choosing Between Object Initializers and Constructors
+
+1. **Constructors**
+
+   Constructors require all parameters to be provided, ensuring that all necessary data is set during object creation.
+
+   ```csharp
+   public Person(string name, int yearOfBirth)
+   {
+       Name = name;
+       YearOfBirth = yearOfBirth;
+   }
+
+   Person person = new Person("John", 1981);
+   ```
+
+2. **Object Initializers**
+
+   Object initializers allow for more flexibility, as not all properties need to be set. This can make code more readable, especially when there are many properties.
+
+   ```csharp
+   Person person = new Person
+   {
+       Name = "John"
+       // YearOfBirth is not set, will default to 0
+   };
+   ```
+
+### Summary
+
+- **Object Initializers**: Provide a convenient way to set properties during object creation. They require public setters.
+- **`init` Accessor**: Introduced in C# 9, allows properties to be set during object initialization but not modified afterward, ensuring immutability.
+- **Constructors vs. Object Initializers**: Constructors ensure all necessary data is set, while object initializers offer flexibility and readability.
+
+In practice, constructors are used more often for ensuring all required parameters are provided, but object initializers are also useful when flexibility and readability are important.
+
+### Introduction to Computed Properties
+
+In this lecture, we will learn to create computed properties and understand when to use them versus parameterless methods. Computed properties do not wrap any field but instead return a result based on some logic.
+
+### Creating Computed Properties
+
+1. **Example of a Computed Property**
+
+   Let's add a `Description` property to a `Rectangle` class that returns a string describing the rectangle object.
+
+   ```csharp
+   public class Rectangle
+   {
+       public double Width { get; set; }
+       public double Height { get; set; }
+
+       public string Description => $"Rectangle with width {Width} and height {Height}.";
+   }
+   ```
+
+   As you can see, the syntax for creating computed properties is almost the same as for expression-bodied methods. The property returns a string that describes the rectangle, and the result is computed each time the property is accessed.
+
+2. **Performance Considerations**
+
+   If a computed property is accessed multiple times, its value is recalculated each time. For simple logic, this is not an issue, but for more complex calculations, it can cause performance problems.
+
+   ```csharp
+   public double ComplexCalculation => /* some complex logic here */;
+   ```
+
+   Accessing such a property repeatedly can be costly.
+
+### Choosing Between Properties and Methods
+
+1. **Properties Represent Data**
+
+   Properties should be used to represent data. They should be quick to access and not involve performance-heavy computations.
+
+   ```csharp
+   public double Area => Width * Height;
+   public double Circumference => 2 * (Width + Height);
+   ```
+
+2. **Methods Represent Actions**
+
+   Methods should be used to represent actions or operations, especially when they involve significant processing.
+
+   ```csharp
+   public double CalculateComplexValue()
+   {
+       // some complex logic here
+   }
+   ```
+
+   Using methods for performance-heavy calculations sets clear expectations that the operation might take time or have side effects.
+
+3. **Guidelines for Choosing**
+
+   - **Properties**: Use for simple data retrieval without performance concerns.
+   - **Methods**: Use for actions or complex calculations.
+
+   Users expect properties to work like fields, i.e., quickly and without causing runtime errors or performance issues. Therefore, avoid putting complex logic into computed properties.
+
+### Summary
+
+- **Computed Properties**: Return a result based on some logic and do not wrap fields. They should be quick to access and represent data.
+- **Parameterless Methods**: Represent actions and are suitable for performance-heavy computations or operations with side effects.
+- **Choosing Between Properties and Methods**: Properties for data and methods for actions. Consider performance and user expectations when deciding.
+
+By following these guidelines, we can ensure our code is efficient, maintainable, and meets user expectations.
+
+### Understanding Static Classes and Methods
+
+In this lecture, we will learn about static classes, static methods, and why all `const` fields are implicitly static. We'll discuss their uses, limitations, and how they can optimize your code.
+
+### Static Classes and Methods
+
+1. **Stateful vs. Stateless Classes**
+
+   - **Stateful Classes**: Classes like `Rectangle` have instances with different data (e.g., different width and height).
+   - **Stateless Classes**: Classes like `Calculator` contain only methods and no instance-specific data. All instances of such classes would behave the same, making instance creation unnecessary.
+
+2. **Static Methods**
+
+   - **Definition**: Static methods belong to the class itself, not to any specific instance. They cannot access instance data (fields or properties).
+
+   ```csharp
+   public class Calculator
+   {
+       public static int Add(int a, int b)
+       {
+           return a + b;
+       }
+   }
+   ```
+
+   - **Calling Static Methods**: Static methods are called on the class itself, not on an instance.
+
+   ```csharp
+   int result = Calculator.Add(3, 5);
+   ```
+
+3. **Static Classes**
+
+   - **Definition**: A static class cannot be instantiated and can only contain static members (methods, properties, fields).
+
+   ```csharp
+   public static class Calculator
+   {
+       public static int Add(int a, int b)
+       {
+           return a + b;
+       }
+   }
+   ```
+
+   - **Benefits**: They group utility methods together without needing instances, ensuring no unnecessary object creations, and saving memory.
+
+### Static Methods in Non-Static Classes
+
+1. **Adding Static Methods**
+
+   - Non-static classes can contain static methods. These methods are called on the class itself.
+
+   ```csharp
+   public class Rectangle
+   {
+       public double Width { get; set; }
+       public double Height { get; set; }
+
+       public static double CalculateDiagonal(double width, double height)
+       {
+           return Math.Sqrt(width * width + height * height);
+       }
+   }
+   ```
+
+   - **Calling Static Methods**: Use the class name, not an instance.
+
+   ```csharp
+   double diagonal = Rectangle.CalculateDiagonal(3, 4);
+   ```
+
+2. **Access Restrictions**
+
+   - Static methods cannot access instance fields or methods because they do not belong to any specific instance.
+
+   ```csharp
+   public static void SomeStaticMethod()
+   {
+       // Error: Cannot access instance members from static method
+       // double area = Width * Height;
+   }
+   ```
+
+### The `const` Keyword
+
+1. **Constant Fields**
+
+   - Fields declared with the `const` keyword are constant and their values cannot change. They are implicitly static because the value is the same across all instances.
+
+   ```csharp
+   public class MathConstants
+   {
+       public const double Pi = 3.14159;
+   }
+   ```
+
+   - **Accessing Constant Fields**: Like static fields, constant fields are accessed using the class name.
+
+   ```csharp
+   double circleCircumference = 2 * MathConstants.Pi * radius;
+   ```
+
+   - **Memory Efficiency**: Since `const` fields are the same for all instances, storing them in the class itself saves memory.
+
+### Best Practices
+
+1. **Static Methods for Utility Functions**
+
+   - Use static methods for utility functions that do not depend on instance data.
+
+2. **Mark Private Methods Static if Possible**
+
+   - If a private method does not use instance data, make it static. This indicates that the method does not modify the object's state and can slightly improve performance.
+
+3. **Use `const` for Immutable Values**
+   - Use the `const` keyword for values that do not change. This ensures they are shared across all instances, saving memory and improving performance.
+
+### Summary
+
+- **Static Methods**: Belong to the class, not instances, and cannot access instance data.
+- **Static Classes**: Cannot be instantiated and only contain static members.
+- **`const` Fields**: Immutable and implicitly static, ensuring consistent values across all instances.
+- **Best Practices**: Use static methods for stateless operations, mark non-instance-dependent private methods as static, and use `const` for immutable values.
+
+By understanding and applying these concepts, you can write more efficient and readable code in C#.
+
+### Understanding Static Fields, Properties, and Constructors
+
+In this lecture, we will learn about static fields, properties, and constructors. We'll discuss their purposes, how to use them, and the potential risks associated with them.
+
+### Static Fields and Properties
+
+1. **Definition**
+
+   - **Static Fields and Properties**: These belong to the class as a whole rather than any specific instance. They are shared across all instances of the class.
+
+   ```csharp
+   public class Rectangle
+   {
+       public static int InstanceCount { get; private set; }
+
+       public Rectangle()
+       {
+           InstanceCount++;
+       }
+   }
+   ```
+
+2. **Use Case**
+
+   - **Tracking Instance Count**: To keep track of the number of `Rectangle` instances created, use a static field or property. Increment this count in the constructor.
+
+   ```csharp
+   public class Rectangle
+   {
+       public static int InstanceCount { get; private set; }
+
+       public Rectangle()
+       {
+           InstanceCount++;
+       }
+   }
+   ```
+
+   - **Accessing Static Properties**: Access static properties using the class name, not an instance.
+
+   ```csharp
+   Console.WriteLine(Rectangle.InstanceCount);
+   ```
+
+3. **Initialization**
+
+   - **Default Initialization**: Static fields and properties are initialized to their default values if not explicitly initialized.
+
+   ```csharp
+   public static DateTime FirstUsage { get; private set; } = DateTime.Now;
+   ```
+
+### Static Constructors
+
+1. **Definition**
+
+   - **Static Constructors**: These initialize static fields and properties. They do not have access modifiers and use the `static` keyword.
+
+   ```csharp
+   public class Rectangle
+   {
+       public static DateTime FirstUsage { get; private set; }
+
+       static Rectangle()
+       {
+           FirstUsage = DateTime.Now;
+       }
+   }
+   ```
+
+2. **Execution**
+   - **Timing**: The static constructor is called before the first instance of the class is created or any static members are accessed.
+
+### Risks and Best Practices
+
+1. **Caution with Static Members**
+
+   - **Shared State**: Static fields and properties can lead to unexpected behavior if not used carefully, as they are shared across all instances.
+   - **Thread Safety**: If multiple threads access and modify static fields simultaneously, it can cause concurrency issues.
+
+2. **Professional Experience**
+
+   - **Avoidance in Production**: Many experienced developers avoid using static fields and properties in production code due to the risks associated with shared state and concurrency issues.
+
+3. **Understanding Legacy Code**
+   - **Reading Code**: Even if you avoid using static members, understanding them is crucial as you may encounter them in legacy code or other developers' code.
+
+### Summary
+
+- **Static Fields and Properties**: Shared across all instances of a class, useful for tracking class-wide data.
+- **Static Constructors**: Initialize static members, called before the first instance is created or any static members are accessed.
+- **Risks**: Shared state can lead to concurrency issues; use static members cautiously.
+
+By understanding and carefully applying these concepts, you can make informed decisions about when and how to use static fields, properties, and constructors in C#.
